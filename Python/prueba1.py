@@ -43,6 +43,6 @@ elif num>5 and num<7:
 else:
     print("E")
 
-#mirar tutorial de listas append y remove sort y demás movida
+#mirar tutorial de listas append y remove sort y demás movidaa
 
 
