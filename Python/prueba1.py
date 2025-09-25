@@ -100,6 +100,8 @@ print("Eliminar posición X")
 
 lista=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
 """
+
+"""
 lista1=[]
 print("En rango 20")
 for i in range(20):
@@ -116,4 +118,28 @@ print()
 lista3=[]
 for z in range(2,20,3):
     lista3.append(i)
-    print(z)
+"""
+
+1.
+lista=[]
+for i in range(1,6):
+    lista.append(i)
+
+lista.append(6)
+
+lista.pop(2)
+print(lista)
+print(lista[0],lista[3])
+
+2.
+lista2=[]
+for j in range(10,40,10):
+    lista2.append(j)
+print(lista2)
+
+string = "-".join(str(j) for j in lista2)
+print(string)
+
+3.
+lista3=["betis","papa","queso","sí","bitacora","chorizo"]
+print(len(lista3))
