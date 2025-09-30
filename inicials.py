@@ -35,7 +35,7 @@ nombre=input(f"Nombre: ")
 apellido=input(f"Apellido: ")
 edad=input(f"Edad: ")
 peso=input(f"Peso: ")
-if(int(edad)>=18):
+if(int(edad)<18):
     print(f"Estos son los datos: {nombre} {apellido} {edad} {peso}")
 else:
     print(f"Estos son los datos: {nombre} {apellido} {edad} {peso} (mayor de edad)")
