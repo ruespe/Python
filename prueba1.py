@@ -143,3 +143,18 @@ print(string)
 3.
 lista3=["betis","papa","queso","sí","bitacora","chorizo"]
 print(len(lista3))
+
+
+
+
+
+#laberinto lista de varios numeros implementar hacia abajo o hacia arriba (array de 2 dimensiones)
+
+#print separador y fin de linea
+#input variable para guadra informacion
+#operaciones elevar cociente division todo eso negacion 
+#if else
+#bucles
+#listas y tuplas insert remove pop
+#raiz cuadrad elevar potencia a 0,5
+#prohibidos los import
