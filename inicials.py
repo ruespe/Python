@@ -47,25 +47,32 @@ else:
 # Mostra els noms què s’han repetit o el missatge “SENSE NOMS REPETITS”.
 
 contMayorEdad=0
-repetido=True
 pesos=[]
-lista=[{'nom':'Fernando','apellido':'Garcia','edad':33,'peso':88},
+lista=[{'nom':'JUan','apellido':'Garcia','edad':33,'peso':88},
        {'nom':'Juan','apellido':'Zamora','edad':25,'peso':71},
-       {'nom':'Jose','apellido':'Torres','edad':42,'peso':93}
+       {'nom':'Juan','apellido':'Torres','edad':42,'peso':93}
        ]
+noms = [persona['nom'] for persona in lista]
+repetits = set([nom for nom in noms if noms.count(nom) > 1])
+
 for persona in lista:
-    if(nombre==nombre):
-        for persona in lista:
-            nombre = persona['nom']
-            apellido = persona['apellido']
-            edad = persona['edad']
-            peso = persona['peso']
-            pesos.append(persona['peso'])
-        if edad >=18:
-            print(f"Estos son los datos: {nombre} {edad} años {peso} kg mayor de edad")
-            contMayorEdad+=1
-        else:      
-            print(f"Estos son los datos: {nombre} {edad} años {peso} kg menor de edad")
+    nombre = persona['nom']
+    apellido = persona['apellido']
+    edad = persona['edad']
+    peso = persona['peso']
+    pesos.append(persona['peso'])
+
+    if edad >=18:
+        print(f"Estos son los datos: {nombre} {edad} años {peso} kg mayor de edad")
+        contMayorEdad+=1
+    else:      
+        print(f"Estos son los datos: {nombre} {edad} años {peso} kg menor de edad")
+
+if repetits:
+    print("Noms repetits:", ", ".join(repetits))
+else:
+    print("SENSE NOMS REPETITS")
+
 
 print(f"Individuos mayores de edad: {contMayorEdad}")
 
