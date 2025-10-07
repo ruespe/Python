@@ -18,7 +18,7 @@
 # print("Introduce un nombre")
 # while i<4:
 #     print(i)
-#     nombre2 = input(f"{i+1}. Nombre: ")
+#     nombre2 = 
 #     if nombre2 in lista2:
 #          print("Repetido, introduce uno distinto")
 #     else:
@@ -89,3 +89,5 @@ print("Mediana de pesos: ", mediana)
 
 # 5-Mostra tots els individus de l’exercici 4, què són majors d’edat i tenen un pes igual o superior a la mitjana.
 
+# sqrt= num ** 0.5;
+print(f"{$2:.f}")
