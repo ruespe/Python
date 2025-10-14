@@ -116,45 +116,46 @@ print(resultado)
 segons = calcula_segons( hores, minuts, segons)
 
 """
-def calcula_segundos(horas, minutos, segundos):
-    horasEnsegundos= horas*60*60
-    minutosEnSegundos= minutos*60
+# def calcula_segundos(horas, minutos, segundos):
+#     horasEnsegundos= horas*60*60
+#     minutosEnSegundos= minutos*60
 
-    segundosTotales = horasEnsegundos + minutosEnSegundos + segundos
+#     segundosTotales = horasEnsegundos + minutosEnSegundos + segundos
 
-    return segundosTotales
+#     return segundosTotales
 
-    
 
-horas = int(input("Introduce las horas: "))
-minutos = int(input("Introduce las minutos: "))
-segundos = int(input("Introduce las segundos: "))
+# horas = int(input("Introduce las horas: "))
+# minutos = int(input("Introduce las minutos: "))
+# segundos = int(input("Introduce las segundos: "))
 
-calcula_segundos(horas, minutos, segundos)
+# calcula_segundos(horas, minutos, segundos)
 
-resultado = calcula_segundos(horas,minutos,segundos)
+# resultado = calcula_segundos(horas,minutos,segundos)
 
-print(resultado)
+# print(resultado)
 
 """
 5- Crea una funció temps que calculi la quantitat d’hores, minuts i segons d’un temps donat en segons.
 hores, minuts, segons = temps(segons)
 
 """
-def tiempo(horas, minutos, segundos):
-    horasEnSegundos = horas/60/60
-    minutosEnSegundos = minutos/60
+# def tiempo(horas, minutos, segundos):
+#     horasEnSegundos = horas*3600
+#     minutosEnSegundos = minutos*60
 
-    segundosTotales = horasEnSegundos + minutosEnSegundos + segundos
+#     segundosTotales = horasEnSegundos + minutosEnSegundos + segundos
 
-    return segundosTotales
+#     return segundosTotales
 
 
-horas = 
-minutos =
+# horas =  int(input("Introduce las horas: "))
+# minutos = int(input("Introduce los minutos: "))
+# segundos = int(input("Introduce los segundos: "))
 
-resultado = tiempo(horas, minutos, segundos)
+# resultado = tiempo(horas, minutos, segundos)
 
+# print(resultado)
 
 """
 6- Escriu una funció esvocal que a partir un caràcter torni True si el caràcter és una vocal o False en cas contrari.
@@ -164,3 +165,118 @@ else:
     print(caracter, “NO és una vocal”)
 
 """
+# EXAMEN PYTHON HABRÁ QUE HACER UN MENÚ
+
+# def esvocal(caracter):
+
+#     listaVocales=["a","e","i","o","u"]
+#     vocalLocalizada = False
+
+#     for letra in listaVocales:
+#         if letra == caracter:
+#             vocalLocalizada = True
+
+#     if vocalLocalizada == True:
+#         print(f"{caracter} es una vocal.")
+#     else:
+#         print(f"{caracter} no es una vocal.")
+
+
+
+# caracter = str(input("Introduce un solo caracter: "))
+
+# while len(caracter) != 1:
+#     print("Sólo se permite un carácter")
+#     caracter = str(input("Introduce un solo carácter: "))
+
+# esvocal(caracter)
+
+
+"""
+7-Crea una funció canviaMorse programa que sigui capaç de transformar text natural a codi morse i viceversa.
+Heu de detectar automàticament de quin tipus es tracta i realitzar la conversió.
+En morse se suporta ratlla "-", punt ".", s'ha de fer servir un espai " " per separar lletres i dos espais "  " entre paraules.
+L'alfabet morse suportat serà el mostrat a https://es.wikipedia.org/wiki/Código_morse.
+"""
+
+def canviaMorse(fraseMorse):
+
+    listaLetrasYnumeros = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m","n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z","0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+    morseDiccionario = {
+    "a": ".-",    "b": "-...",  "c": "-.-.",  "d": "-..",   "e": ".",     "f": "..-.",
+    "g": "--.",   "h": "....",  "i": "..",    "j": ".---",  "k": "-.-",   "l": ".-..",
+    "m": "--",    "n": "-.",    "o": "---",   "p": ".--.",  "q": "--.-",  "r": ".-.",
+    "s": "...",   "t": "-",     "u": "..-",   "v": "...-",  "w": ".--",   "x": "-..-",
+    "y": "-.--",  "z": "--..",
+    "0": "-----", "1": ".----", "2": "..---", "3": "...--", "4": "....-", "5": ".....",
+    "6": "-....", "7": "--...", "8": "---..", "9": "----."
+        }
+
+    tipo = ""
+    fraseTraducidaAMorse = ""
+    fraseAminusculas = fraseMorse.lower()
+    fraseTraducidaANormal = ""
+
+    for texto in fraseAminusculas:
+        if texto not in listaLetrasYnumeros:
+            tipo = "morse"
+        else:
+            tipo = "normal"
+    
+    # Traduccón Normal a Morse
+    if tipo == "normal":
+        for caracter in fraseAminusculas:
+            if caracter in morseDiccionario:
+                fraseTraducidaAMorse += morseDiccionario[caracter]
+                fraseTraducidaAMorse += " "   
+            elif caracter == " ":
+                fraseTraducidaAMorse += "  "   
+
+    # Traducción Morse a Normal
+    if tipo == "morse":
+        for clave, valor in morseDiccionario.items():
+            if valor in fraseMorse:
+                fraseTraducidaANormal += clave 
+
+
+   #print(fraseTraducidaAMorse)
+    print(fraseTraducidaANormal)
+
+
+
+fraseMorse = input("Introduce la frase que quieras que sea traducida a Morse: ")
+
+canviaMorse(fraseMorse)
+
+"""
+8-Crea una funció diferencies que a partir de dues cadenes de text gairebé iguals, retorneu les diferències.
+La funció ha de trobar les diferències a la segona cadena i retornar-les en format llista.
+Les dues cadenes de text han de ser iguals en longitud.
+Exemples:
+Em dic mouredev / Em dic meuredov -> ["e", "o"]
+Em dic.Brais Moure / Em dic brais moure -> [" ", "b", "m"]
+"""
+
+"""
+9-Crea una funció comptaLA que a partir d'una frase retorni la quantitat de LA trobades.
+No es diferencia entre majúscules i minúscules. No s'ha de fer servir el mètode count.
+Exemple:
+Ell s'ha passat la tarda cantant La, LA, lA, ...
+Retorna 4
+
+Exemple:
+Ell s'ha passat la tarda cantant LaLAlA, ...
+Retorna 4
+"""
+"""
+
+
+10-Crea una funció comptaLES que a partir d'una frase retorni la quantitat de LES trobades.
+No es diferencia entre majúscules i minúscules. No s'ha de fer servir el mètode count.
+Exemple:
+Ell es passa totes les tardes cantant LaLESlesla...
+Retorna 3
+
+"""
+
