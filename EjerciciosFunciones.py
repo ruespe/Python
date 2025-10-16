@@ -182,7 +182,6 @@ else:
 #         print(f"{caracter} no es una vocal.")
 
 
-
 # caracter = str(input("Introduce un solo caracter: "))
 
 # while len(caracter) != 1:
@@ -199,55 +198,54 @@ En morse se suporta ratlla "-", punt ".", s'ha de fer servir un espai " " per se
 L'alfabet morse suportat serà el mostrat a https://es.wikipedia.org/wiki/Código_morse.
 """
 
-def canviaMorse(fraseMorse):
+# def canviaMorse(fraseMorse):
 
-    listaLetrasYnumeros = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m","n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z","0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+#     listaLetrasYnumeros = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m","n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z","0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-    morseDiccionario = {
-    "a": ".-",    "b": "-...",  "c": "-.-.",  "d": "-..",   "e": ".",     "f": "..-.",
-    "g": "--.",   "h": "....",  "i": "..",    "j": ".---",  "k": "-.-",   "l": ".-..",
-    "m": "--",    "n": "-.",    "o": "---",   "p": ".--.",  "q": "--.-",  "r": ".-.",
-    "s": "...",   "t": "-",     "u": "..-",   "v": "...-",  "w": ".--",   "x": "-..-",
-    "y": "-.--",  "z": "--..",
-    "0": "-----", "1": ".----", "2": "..---", "3": "...--", "4": "....-", "5": ".....",
-    "6": "-....", "7": "--...", "8": "---..", "9": "----."
-        }
+#     morseDiccionario = {
+#     "a": ".-",    "b": "-...",  "c": "-.-.",  "d": "-..",   "e": ".",     "f": "..-.",
+#     "g": "--.",   "h": "....",  "i": "..",    "j": ".---",  "k": "-.-",   "l": ".-..",
+#     "m": "--",    "n": "-.",    "o": "---",   "p": ".--.",  "q": "--.-",  "r": ".-.",
+#     "s": "...",   "t": "-",     "u": "..-",   "v": "...-",  "w": ".--",   "x": "-..-",
+#     "y": "-.--",  "z": "--..",
+#     "0": "-----", "1": ".----", "2": "..---", "3": "...--", "4": "....-", "5": ".....",
+#     "6": "-....", "7": "--...", "8": "---..", "9": "----."
+#         }
 
-    tipo = ""
-    fraseTraducidaAMorse = ""
-    fraseAminusculas = fraseMorse.lower()
-    fraseTraducidaANormal = ""
+#     tipo = ""
+#     fraseTraducidaAMorse = ""
+#     fraseAminusculas = fraseMorse.lower()
+#     fraseTraducidaANormal = ""
 
-    for texto in fraseAminusculas:
-        if texto not in listaLetrasYnumeros:
-            tipo = "morse"
-        else:
-            tipo = "normal"
-    
-    # Traduccón Normal a Morse
-    if tipo == "normal":
-        for caracter in fraseAminusculas:
-            if caracter in morseDiccionario:
-                fraseTraducidaAMorse += morseDiccionario[caracter]
-                fraseTraducidaAMorse += " "   
-            elif caracter == " ":
-                fraseTraducidaAMorse += "  "   
+#     for texto in fraseAminusculas:
+#         if texto not in listaLetrasYnumeros:
+#             tipo = "morse"
+#         else:
+#             tipo = "normal"
 
-    # Traducción Morse a Normal
-    if tipo == "morse":
-        for clave, valor in morseDiccionario.items():
-            if valor in fraseMorse:
-                fraseTraducidaANormal += clave 
+#     Traduccón Normal a Morse
+#     if tipo == "normal":
+#         for caracter in fraseAminusculas:
+#             if caracter in morseDiccionario:
+#                 fraseTraducidaAMorse += morseDiccionario[caracter]
+#                 fraseTraducidaAMorse += " "
+#             elif caracter == " ":
+#                 fraseTraducidaAMorse += "  "
 
-
-   #print(fraseTraducidaAMorse)
-    print(fraseTraducidaANormal)
+#     Traducción Morse a Normal
+#     if tipo == "morse":
+#         for clave, valor in morseDiccionario.items():
+#             if valor in fraseMorse:
+#                 fraseTraducidaANormal += clave
 
 
+#    print(fraseTraducidaAMorse)
+#     print(fraseTraducidaANormal)
 
-fraseMorse = input("Introduce la frase que quieras que sea traducida a Morse: ")
 
-canviaMorse(fraseMorse)
+# fraseMorse = input("Introduce la frase que quieras que sea traducida a Morse: ")
+
+# canviaMorse(fraseMorse)
 
 """
 8-Crea una funció diferencies que a partir de dues cadenes de text gairebé iguals, retorneu les diferències.
@@ -269,9 +267,21 @@ Exemple:
 Ell s'ha passat la tarda cantant LaLAlA, ...
 Retorna 4
 """
+def comptaLA(frase):
+    fraseMinuscula = frase.lower()
+
+    for i in range(len(fraseMinuscula)):
+        i
+
+
+
+frase = input("Introduce una frase para contar los la que contiene")
+
+comptaLA(frase)
+
+
+
 """
-
-
 10-Crea una funció comptaLES que a partir d'una frase retorni la quantitat de LES trobades.
 No es diferencia entre majúscules i minúscules. No s'ha de fer servir el mètode count.
 Exemple:
@@ -280,3 +290,29 @@ Retorna 3
 
 """
 
+
+# def comptaLES(frase):
+#     fraseLower = frase.lower()
+#     cont=0
+#     palabra1 = ""
+#     palabra2 = ""
+#     palabra3 = ""
+
+
+#     for i in range(len(fraseLower) - 2):  
+#         palabra1 = fraseLower[i]
+#         if i + 1 <len(frase):
+#             palabra2 = fraseLower[i+1]
+#         if i + 2 <len(frase):
+#             palabra3 = fraseLower[i+2]
+#         nueva = "".join([palabra1, palabra2, palabra3])
+        
+#         if nueva == "les":
+#             cont+=1
+        
+#     print(f"Numero de veces: {cont}")
+
+
+# frase = input("Introduce una frase para contar los les: ")
+
+# comptaLES(frase)
