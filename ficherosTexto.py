@@ -68,38 +68,62 @@
 3- Crea un mètode afegir, que escrigui el contingut d'una llista en un fitxer. S'ha de fer append, el contingut original del fitxer no s'ha d'esborrar.
 
 """
-def añadir(nombreArchivo):
-    entrada = input("Introduce los valores que quieras que posea la lista: ")
-    lista = entrada.split()
-    string = " ".join(lista)
-    #print(lista)
-    try:
-        with open(nombreArchivo, 'a') as archivo:
-            archivo.write(string + "\n")
-    except FileNotFoundError:
-        print("Archivo no encontrado")
-    except IOError:
-        print("Error desconocido")
+# def añadir(nombreArchivo):
+#     entrada = input("Introduce los valores que quieras que posea la lista: ")
+#     lista = entrada.split()
+#     string = " ".join(lista)
+#     #print(lista)
+#     try:
+#         with open(nombreArchivo, 'a') as archivo:
+#             archivo.write(string + "\n")
+#     except FileNotFoundError:
+#         print("Archivo no encontrado")
+#     except IOError:
+#         print("Error desconocido")
 
-    try:
-        with open(nombreArchivo, 'r') as archivo:
-            mostrar = archivo.read()
-            print(mostrar)
-    except FileNotFoundError:
-        print("No se encuentra el archivo")
-    except IOError:
-        print("Error desconocido")
+#     try:
+#         with open(nombreArchivo, 'r') as archivo:
+#             mostrar = archivo.read()
+#             print(mostrar)
+#     except FileNotFoundError:
+#         print("No se encuentra el archivo")
+#     except IOError:
+#         print("Error desconocido")
 
 
-nombreArchivo = input("Nombre archivo: ")
-añadir(nombreArchivo)
+# nombreArchivo = input("Nombre archivo: ")
+# añadir(nombreArchivo)
 
 """
 4- Crea un mètode escriuPos, que escrigui una frase en un fitxer, a una posició concreta. Si la posició és incorrecta, ha de mostrar un missatge informatiu.
 
 """
-def escribirPosicion(nombreArchivo):
+
+
+def escribirPosicion(nombreArchivo, frase, posicion):
 
     try:
-        with open(nombreArchivo, 'a'):
-            nombreArchivo.read()
+        with open(nombreArchivo, "r+") as archivo:
+            archivo.seek(0, 2)
+            longitud = archivo.tell()
+
+            if posicion > longitud:
+                print("ERROR: Longitud superada")
+            else:
+                archivo.seek(posicion)
+                resto = archivo.read()
+                archivo.write(frase)
+                archivo.write(" ")
+                archivo.write(resto)
+                
+    except FileNotFoundError:
+        print("Archivo no encontrado")
+    except IOError:
+        print("Otro tipo de error")
+
+
+archivo = input("Pon nombre arvhivo: ")
+frase = input("Pon frase: ")
+posicion = int(input("Pon posicion: "))
+
+escribirPosicion(archivo, frase, posicion)
