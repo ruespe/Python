@@ -1,0 +1,62 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personajes</title>
+    <link rel="stylesheet" href="{% static 'personaje/personaje.css' %}" />
+  </head>
+  <body>
+    {% for p in personajes %}
+    <div class="card">
+      <div class="card-header">
+        <h1>{{ p.nombre }}</h1>
+        <div class="badge-row">
+          <div class="badge">Raza: <span>{{ p.raza }}</span></div>
+          <div class="badge">Clase: <span>{{ p.clase }}</span></div>
+        </div>
+        <div class="nivel-container">
+          <span class="nivel-label">Nivel</span>
+          <div class="nivel-value">{{ p.nivel }}</div>
+        </div>
+        {% if p.nivel > 5 %}
+        <div class="alert alert-gold">¡Eres de alto nivel!</div>
+        {% endif %} {% if p.nivel == 40 %}
+        <div class="alert alert-gold">¡Nivel MÁXIMO!</div>
+        {% endif %}
+      </div>
+
+      <div class="section">
+        <div class="section-title">Stats</div>
+        <div class="stats-grid">
+          {% for stat, valor in p.stats.items %}
+          <div class="stat-box">
+            <div class="stat-name">{{ stat }}</div>
+            <div class="stat-value">{{ valor }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Habilidades</div>
+        <ul class="item-list">
+          {% for h in p.habilidades %}
+          <li>{{ h }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Equipamiento</div>
+        <ul class="item-list">
+          {% for e in p.equipamiento %}
+          <li>{{ e }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
+  </body>
+</html>
