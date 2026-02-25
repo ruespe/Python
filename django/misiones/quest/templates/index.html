@@ -1,0 +1,20 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Personajes</title>
+   <link rel="stylesheet" href="{% static 'personaje/personaje.css' %}" />
+ </head>
+ <body>
+   {% for p in misiones %}
+   <div class="card">
+     <div class="card-header">
+       <!-- <h1>{{ p.nombre }}</h1> -->
+       <div class="badge-row">
+         <div class="badge">Raza: <span>{{ p.Ubicación }}</span></div>
+         <div class="badge">Clase: <span>{{ p.Recompensa }}</span></div>
+        <div class="badge">Clase: <span>{{ p.Nivel }}</span></div>
+       </div>
+    {% endfor %}

@@ -1,0 +1,78 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crear personaje</title>
+    <link rel="stylesheet" href="{% static 'personaje/personaje.css' %}" />
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-header">
+        <h1>Nuevo personaje</h1>
+      </div>
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="form-row">
+          {{ form.nombre.label_tag }} {{ form.nombre }} {{ form.nombre.errors }}
+        </div>
+
+        <div class="form-row">
+          {{ form.auto_generar }} {{ form.auto_generar.label_tag }}
+          <small class="helptext">{{ form.auto_generar.help_text }}</small>
+          {{ form.auto_generar.errors }}
+        </div>
+
+        <div class="form-row js-mode-fields is-hidden">
+          {{ form.nivel.label_tag }} {{ form.nivel }} {{ form.nivel.errors }}
+        </div>
+
+        <div class="form-row js-mode-fields is-hidden">
+          {{ form.inventario.label_tag }} {{ form.inventario }} {{
+          form.inventario.errors }}
+        </div>
+
+        <div class="form-row js-manual-fields is-hidden">
+          {{ form.raza.label_tag }} {{ form.raza }} {{ form.raza.errors }}
+        </div>
+
+        <div class="form-row js-manual-fields is-hidden">
+          {{ form.clase.label_tag }} {{ form.clase }} {{ form.clase.errors }}
+        </div>
+
+        <div class="form-row js-manual-fields is-hidden">
+          {{ form.vida.label_tag }} {{ form.vida }} {{ form.vida.errors }}
+        </div>
+
+        <div class="form-row js-manual-fields is-hidden">
+          {{ form.fuerza.label_tag }} {{ form.fuerza }} {{ form.fuerza.errors }}
+        </div>
+        <div class="form-row js-manual-fields is-hidden">
+          {{ form.destreza.label_tag }} {{ form.destreza }} {{
+          form.destreza.errors }}
+        </div>
+        <div class="form-row js-manual-fields is-hidden">
+          {{ form.constitucion.label_tag }} {{ form.constitucion }} {{
+          form.constitucion.errors }}
+        </div>
+        <div class="form-row js-manual-fields is-hidden">
+          {{ form.inteligencia.label_tag }} {{ form.inteligencia }} {{
+          form.inteligencia.errors }}
+        </div>
+        <div class="form-row js-manual-fields is-hidden">
+          {{ form.sabiduria.label_tag }} {{ form.sabiduria }} {{
+          form.sabiduria.errors }}
+        </div>
+        <div class="form-row js-manual-fields is-hidden">
+          {{ form.carisma.label_tag }} {{ form.carisma }} {{ form.carisma.errors
+          }}
+        </div>
+
+        <button type="submit">Guardar personaje</button>
+      </form>
+    </div>
+    <script src="{% static 'personaje/form_dinamico.js' %}"></script>
+  </body>
+</html>

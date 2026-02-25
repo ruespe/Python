@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+
+from .forms import PersonajeForm
 
 
 def personaje(request):
@@ -24,3 +26,23 @@ def personaje(request):
     ]
     contexto = {"personajes": personajes}
     return render(request, "personaje.html", contexto)
+
+
+def crear_personaje(request):
+    if request.method == "POST":
+        form = PersonajeForm(request.POST)
+        if form.is_valid():
+            # commit=False: crea el objeto en memoria pero no lo guarda aún en la BD
+            personaje_obj = form.save(commit=False)
+
+            if form.cleaned_data.get("auto_generar"):
+                # reescribe raza, clase y todos los stats con tiradas 4d6
+                personaje_obj.generate_stats()
+
+            # Ahora sí se gurda BD
+            personaje_obj.save()
+            return redirect("crear_personaje")
+    else:
+        form = PersonajeForm()
+
+    return render(request, "personaje_form.html", {"form": form})
