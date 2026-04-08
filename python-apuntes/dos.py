@@ -10,7 +10,6 @@ Cada secció conté una breu narrativa (context) i l'enunciat tècnic.
 Podeu executar aquest fitxer per veure exemples i provar les vostres funcions.
 """
 
-
 # -------------------------------------------------------------
 # 1) Les Proves de la Saviesa  — 10 pt
 # Abans d’entrar al temple, un pedestall de pedra t’interroga:
@@ -82,7 +81,7 @@ def atac_critic(dany: int) -> int:
 class Conjurs:
     """Classe que gestiona el registre de conjurs (fitxer + hora)."""
 
-    def __init__(self, filename="conjurs.txt"):
+    def __init__(self, filename='conjurs.txt'):
         self.filename = filename
 
     def mostrar_hora_conjur(self) -> str:
@@ -96,7 +95,7 @@ class Conjurs:
         if filename is None:
             filename = self.filename
         timestamp = datetime.now().isoformat()
-        with open(filename, "a", encoding="utf-8") as f:
+        with open(filename, 'a', encoding='utf-8') as f:
             f.write(f"{timestamp} | {nom_conjur}\n")
         return filename
 
@@ -124,24 +123,22 @@ def registrar_conjur(nom_conjur: str, filename: str = None):
 # Enunciat: generar_laberint_aleatori(filas, columnes, percentatge_parets, fitxer='laberint_auto.txt')
 #   - utilitza S per start i E per exit, X per paret, '.' o ' ' per espai lliure
 #   - desa el resultat a fitxer
-def generar_laberint_aleatori(
-    filas=6, columnes=6, percentatge_parets=25, fitxer="laberint_auto.txt"
-) -> str:
+def generar_laberint_aleatori(filas=6, columnes=6, percentatge_parets=25, fitxer='laberint_auto.txt') -> str:
     """Genera i desa el laberint; retorna la ruta del fitxer creat."""
     laberint = []
     for i in range(filas):
         fila = []
         for j in range(columnes):
             if random.randint(1, 100) <= percentatge_parets:
-                fila.append("X")
+                fila.append('X')
             else:
-                fila.append(".")
+                fila.append('.')
         laberint.append(fila)
-    laberint[0][0] = "S"
-    laberint[filas - 1][columnes - 1] = "E"
-    with open(fitxer, "w", encoding="utf-8") as f:
+    laberint[0][0] = 'S'
+    laberint[filas - 1][columnes - 1] = 'E'
+    with open(fitxer, 'w', encoding='utf-8') as f:
         for fila in laberint:
-            f.write("".join(fila) + "\n")
+            f.write(''.join(fila) + '\n')
     return fitxer
 
 
@@ -157,10 +154,10 @@ def mostrar_laberint(fitxer: str) -> int:
     """Mostra laberint i retorna nombre d'espais lliures (inclou S i E)."""
     lliures = 0
     try:
-        with open(fitxer, "r", encoding="utf-8") as f:
+        with open(fitxer, 'r', encoding='utf-8') as f:
             for linia in f:
-                print(linia, end="")
-                lliures += linia.count(".") + linia.count("S") + linia.count("E")
+                print(linia, end='')
+                lliures += linia.count('.') + linia.count('S') + linia.count('E')
     except FileNotFoundError:
         print(f"No existeix el fitxer {fitxer}")
     return lliures
@@ -178,21 +175,19 @@ def mostrar_laberint(fitxer: str) -> int:
 #
 # Enunciat: processar_grimori(file_input='grimori.txt', file_output='grimori_sorted.txt')
 #   - llegeix, decodifica ROT13, ordena alfabèticament, imprimeix i desa
-def processar_grimori(
-    file_input="grimori.txt", file_output="grimori_sorted.txt"
-) -> str:
+def processar_grimori(file_input="grimori.txt", file_output="grimori_sorted.txt") -> str:
     """Processa el grimori i desa el resultat ordenat; retorna la ruta del fitxer de sortida."""
     try:
-        with open(file_input, "r", encoding="utf-8") as f:
+        with open(file_input, 'r', encoding='utf-8') as f:
             lines = f.readlines()
     except FileNotFoundError:
         print(f"No existeix {file_input}")
         return file_output
-    decoded = [codecs.decode(line, "rot_13") for line in lines]
+    decoded = [codecs.decode(line, 'rot_13') for line in lines]
     decoded.sort()
-    with open(file_output, "w", encoding="utf-8") as f:
+    with open(file_output, 'w', encoding='utf-8') as f:
         for line in decoded:
-            print(line, end="")
+            print(line, end='')
             f.write(line)
     return file_output
 
@@ -211,8 +206,7 @@ def processar_grimori(
 def inicialitzar_bestiari(conn):
     """Crea la taula 'monstres' si no existeix (utilitzat pel test runner)."""
     cursor = conn.cursor()
-    cursor.execute(
-        """
+    cursor.execute('''
         CREATE TABLE IF NOT EXISTS monstres (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nom TEXT,
@@ -220,8 +214,7 @@ def inicialitzar_bestiari(conn):
             hp INTEGER,
             tipus TEXT
         )
-    """
-    )
+    ''')
     conn.commit()
     cursor.close()
 
@@ -233,7 +226,7 @@ def add_monstre(dbpath: str, nom: str, cr: int, hp: int, tipus: str) -> int:
     cursor = conn.cursor()
     cursor.execute(
         "INSERT INTO monstres (nom, cr, hp, tipus) VALUES (?, ?, ?, ?)",
-        (nom, cr, hp, tipus),
+        (nom, cr, hp, tipus)
     )
     conn.commit()
     mid = cursor.lastrowid
@@ -247,7 +240,7 @@ def search_monstre(dbpath: str, term: str):
     conn = sqlite3.connect(dbpath)
     inicialitzar_bestiari(conn)
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM monstres WHERE nom LIKE ?", (f"%{term}%",))
+    cursor.execute("SELECT * FROM monstres WHERE nom LIKE ?", (f'%{term}%',))
     result = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -290,7 +283,7 @@ def delete_monstre(dbpath: str, mid: int) -> int:
 #   - repetir k vegades, imprimir cada tirada amb detalls i retornar (millor, mitjana)
 def tirar(dice_notation: str, k: int = 1):
     """Interpreta notació NdM, fa k repeticions, imprimeix resultats i retorna (millor, mitjana)."""
-    match = re.match(r"^(\d+)d(\d+)$", dice_notation.strip())
+    match = re.match(r'^(\d+)d(\d+)$', dice_notation.strip())
     if not match:
         raise ValueError(f"Notació invàlida: {dice_notation}")
     n, m = int(match.group(1)), int(match.group(2))
@@ -372,7 +365,7 @@ def main():
         db = "bestiari_test_demo.db"
         add_monstre(db, "Goblin", 1, 7, "Humanoid")
         print(list_monstres(db))
-        print(search_monstre(db, "Gob"))
+        print(search_monstre(db,"Gob"))
 
     except Exception as e:
         print("bestiari: NO IMPLEMENTAT:", e)
@@ -385,5 +378,5 @@ def main():
         print("tirar: NO IMPLEMENTAT:", e)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
