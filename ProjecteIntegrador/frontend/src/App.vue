@@ -1,34 +1,38 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
-const router = useRouter()
-const username = ref('')
-const carregantLogout = ref(false)
+const router = useRouter();
+const route = useRoute();
+const username = ref("");
+const carregantLogout = ref(false);
 
 async function comprovarSessio() {
-  const res = await fetch('/api/auth/me/', { credentials: 'same-origin' })
-  const data = await res.json()
-  username.value = data.authenticated ? data.username : ''
+  const res = await fetch("/api/auth/me/", { credentials: "same-origin" });
+  const data = await res.json();
+  username.value = data.authenticated ? data.username : "";
 }
 
 async function logout() {
-  carregantLogout.value = true
-  await fetch('/api/auth/logout/', { method: 'POST', credentials: 'same-origin' })
-  username.value = ''
-  carregantLogout.value = false
-  router.push('/login')
+  carregantLogout.value = true;
+  await fetch("/api/auth/logout/", {
+    method: "POST",
+    credentials: "same-origin",
+  });
+  username.value = "";
+  carregantLogout.value = false;
+  router.push("/login");
 }
 
 // Actualitza el nom d'usuari quan canvia la ruta
-router.afterEach(() => comprovarSessio())
+router.afterEach(() => comprovarSessio());
 
-onMounted(() => comprovarSessio())
+onMounted(() => comprovarSessio());
 </script>
 
 <template>
   <div id="app">
-    <nav v-if="username">
+    <nav v-if="username && route.path !== '/login'">
       <span class="nav-brand">🕵️ Cluedo Web</span>
       <div class="nav-links">
         <router-link to="/joc">🎮 Joc</router-link>
@@ -37,7 +41,7 @@ onMounted(() => comprovarSessio())
       <div class="nav-user">
         <span class="nav-username">👤 {{ username }}</span>
         <button @click="logout" :disabled="carregantLogout">
-          {{ carregantLogout ? '...' : 'Sortir' }}
+          {{ carregantLogout ? "..." : "Sortir" }}
         </button>
       </div>
     </nav>
@@ -50,14 +54,16 @@ onMounted(() => comprovarSessio())
 
 <style>
 /* Reset i base global */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: 'Georgia', serif;
+  font-family: "Georgia", serif;
   background: #1a0a00;
   color: #f0e6d3;
   min-height: 100vh;

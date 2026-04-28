@@ -1,100 +1,109 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from "vue";
 
 // --- Dades del joc ---
-const personatges = ref([])
-const armes = ref([])
-const habitacions = ref([])
+const personatges = ref([]);
+const armes = ref([]);
+const habitacions = ref([]);
 
 // --- Estat de la partida ---
-const solucioId = ref(null)
-const numIntents = ref(0)
+const solucioId = ref(null);
+const numIntents = ref(0);
 
 // --- Seleccions de l'usuari ---
-const personatgeSeleccionat = ref(null)
-const armaSeleccionada = ref(null)
-const habitacioSeleccionada = ref(null)
+const personatgeSeleccionat = ref(null);
+const armaSeleccionada = ref(null);
+const habitacioSeleccionada = ref(null);
 
 // --- Resultat de l'acusació ---
-const resultat = ref(null)
-const guanyat = ref(false)
-const carregant = ref(false)
-const missatgeError = ref('')
+const resultat = ref(null);
+const guanyat = ref(false);
+const carregant = ref(false);
+const missatgeError = ref("");
 
 // --- Cronòmetre ---
-const tempsSegons = ref(0)
-let intervalId = null
+const tempsSegons = ref(0);
+let intervalId = null;
 
 const tempsFormatat = computed(() => {
-  const m = Math.floor(tempsSegons.value / 60)
-  const s = tempsSegons.value % 60
-  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-})
+  const m = Math.floor(tempsSegons.value / 60);
+  const s = tempsSegons.value % 60;
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+});
 
 function iniciarCronòmetre() {
-  if (intervalId) return
-  intervalId = setInterval(() => { tempsSegons.value++ }, 1000)
+  if (intervalId) return;
+  intervalId = setInterval(() => {
+    tempsSegons.value++;
+  }, 1000);
 }
 
 function aturarCronòmetre() {
-  clearInterval(intervalId)
-  intervalId = null
+  clearInterval(intervalId);
+  intervalId = null;
 }
 
-onUnmounted(() => aturarCronòmetre())
+onUnmounted(() => aturarCronòmetre());
 
 // --- Carrega dades i partida ---
 async function carregarDades() {
   const [resP, resA, resH] = await Promise.all([
-    fetch('/api/personatges/'),
-    fetch('/api/armes/'),
-    fetch('/api/habitacions/'),
-  ])
-  personatges.value = await resP.json()
-  armes.value = await resA.json()
-  habitacions.value = await resH.json()
+    fetch("/api/personatges/"),
+    fetch("/api/armes/"),
+    fetch("/api/habitacions/"),
+  ]);
+  personatges.value = await resP.json();
+  armes.value = await resA.json();
+  habitacions.value = await resH.json();
 }
 
 async function iniciarOContinuarPartida() {
   // Comprova si hi ha una partida activa
-  const res = await fetch('/api/partida-activa/', { credentials: 'same-origin' })
-  const data = await res.json()
+  const res = await fetch("/api/partida-activa/", {
+    credentials: "same-origin",
+  });
+  const data = await res.json();
 
   if (data.activa) {
     // Continuem la partida existent
-    solucioId.value = data.solucio_id
-    numIntents.value = data.num_intents
+    solucioId.value = data.solucio_id;
+    numIntents.value = data.num_intents;
   } else {
     // Iniciem una nova partida
-    const res2 = await fetch('/api/nova-partida/', {
-      method: 'POST',
-      credentials: 'same-origin',
-    })
-    const data2 = await res2.json()
-    solucioId.value = data2.solucio_id
-    numIntents.value = 0
+    const res2 = await fetch("/api/nova-partida/", {
+      method: "POST",
+      credentials: "same-origin",
+    });
+    const data2 = await res2.json();
+    solucioId.value = data2.solucio_id;
+    numIntents.value = 0;
   }
 
-  iniciarCronòmetre()
+  iniciarCronòmetre();
 }
 
 // --- Acusació ---
 async function acusar() {
-  missatgeError.value = ''
+  missatgeError.value = "";
 
-  if (!personatgeSeleccionat.value || !armaSeleccionada.value || !habitacioSeleccionada.value) {
-    missatgeError.value = 'Has de seleccionar un personatge, una arma i una habitació!'
-    return
+  if (
+    !personatgeSeleccionat.value ||
+    !armaSeleccionada.value ||
+    !habitacioSeleccionada.value
+  ) {
+    missatgeError.value =
+      "Has de seleccionar un personatge, una arma i una habitació!";
+    return;
   }
 
-  carregant.value = true
-  resultat.value = null
+  carregant.value = true;
+  resultat.value = null;
 
   try {
-    const res = await fetch('/api/acusar/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'same-origin',
+    const res = await fetch("/api/acusar/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
       body: JSON.stringify({
         solucio_id: solucioId.value,
         personatge_id: personatgeSeleccionat.value,
@@ -102,48 +111,48 @@ async function acusar() {
         habitacio_id: habitacioSeleccionada.value,
         temps: tempsSegons.value,
       }),
-    })
+    });
 
-    const data = await res.json()
-    resultat.value = data
-    numIntents.value = data.num_intent
+    const data = await res.json();
+    resultat.value = data;
+    numIntents.value = data.num_intent;
 
     if (data.correcte) {
-      guanyat.value = true
-      aturarCronòmetre()
+      guanyat.value = true;
+      aturarCronòmetre();
     }
   } catch {
-    missatgeError.value = 'Error de connexió amb el servidor'
+    missatgeError.value = "Error de connexió amb el servidor";
   } finally {
-    carregant.value = false
+    carregant.value = false;
   }
 }
 
 // --- Nova partida ---
 async function novaPartida() {
-  aturarCronòmetre()
-  tempsSegons.value = 0
-  resultat.value = null
-  guanyat.value = false
-  numIntents.value = 0
-  personatgeSeleccionat.value = null
-  armaSeleccionada.value = null
-  habitacioSeleccionada.value = null
-  missatgeError.value = ''
+  aturarCronòmetre();
+  tempsSegons.value = 0;
+  resultat.value = null;
+  guanyat.value = false;
+  numIntents.value = 0;
+  personatgeSeleccionat.value = null;
+  armaSeleccionada.value = null;
+  habitacioSeleccionada.value = null;
+  missatgeError.value = "";
 
-  const res = await fetch('/api/nova-partida/', {
-    method: 'POST',
-    credentials: 'same-origin',
-  })
-  const data = await res.json()
-  solucioId.value = data.solucio_id
-  iniciarCronòmetre()
+  const res = await fetch("/api/nova-partida/", {
+    method: "POST",
+    credentials: "same-origin",
+  });
+  const data = await res.json();
+  solucioId.value = data.solucio_id;
+  iniciarCronòmetre();
 }
 
 onMounted(async () => {
-  await carregarDades()
-  await iniciarOContinuarPartida()
-})
+  await carregarDades();
+  await iniciarOContinuarPartida();
+});
 </script>
 
 <template>
@@ -155,7 +164,9 @@ onMounted(async () => {
         <span class="badge">🔍 Intent #{{ numIntents }}</span>
       </div>
       <h1>🔎 La Mansió del Misteri</h1>
-      <p class="subtitol">Descobreix qui va ser, amb quina arma i on va cometre el crim!</p>
+      <p class="subtitol">
+        Descobreix qui va ser, amb quina arma i on va cometre el crim!
+      </p>
     </div>
 
     <!-- Pantalla de victòria -->
@@ -163,12 +174,33 @@ onMounted(async () => {
       <div class="victoria-card">
         <div class="victoria-emoji">🏆</div>
         <h2>¡Cas resolt!</h2>
-        <p>Has resolt el misteri en <strong>{{ numIntents }} intent{{ numIntents !== 1 ? 's' : '' }}</strong>
-        i <strong>{{ tempsFormatat }}</strong>.</p>
+        <p>
+          Has resolt el misteri en
+          <strong
+            >{{ numIntents }} intent{{ numIntents !== 1 ? "s" : "" }}</strong
+          >
+          i <strong>{{ tempsFormatat }}</strong
+          >.
+        </p>
         <div v-if="resultat" class="solucio-final">
-          <p>🧑 <strong>{{ personatges.find(p => p.id === personatgeSeleccionat)?.nom }}</strong></p>
-          <p>🔪 <strong>{{ armes.find(a => a.id === armaSeleccionada)?.nom }}</strong></p>
-          <p>🚪 <strong>{{ habitacions.find(h => h.id === habitacioSeleccionada)?.nom }}</strong></p>
+          <p>
+            🧑
+            <strong>{{
+              personatges.find((p) => p.id === personatgeSeleccionat)?.nom
+            }}</strong>
+          </p>
+          <p>
+            🔪
+            <strong>{{
+              armes.find((a) => a.id === armaSeleccionada)?.nom
+            }}</strong>
+          </p>
+          <p>
+            🚪
+            <strong>{{
+              habitacions.find((h) => h.id === habitacioSeleccionada)?.nom
+            }}</strong>
+          </p>
         </div>
         <button class="btn-nova" @click="novaPartida">Nova Partida</button>
       </div>
@@ -234,22 +266,39 @@ onMounted(async () => {
       <div v-if="resultat && !guanyat" class="feedback">
         <h3>Resultat de l'acusació anterior:</h3>
         <div class="feedback-items">
-          <span :class="['feedback-item', resultat.encert_personatge ? 'encert' : 'error']">
-            {{ resultat.encert_personatge ? '✅' : '❌' }} Sospitós
+          <span
+            :class="[
+              'feedback-item',
+              resultat.encert_personatge ? 'encert' : 'error',
+            ]"
+          >
+            {{ resultat.encert_personatge ? "✅" : "❌" }} Sospitós
           </span>
-          <span :class="['feedback-item', resultat.encert_arma ? 'encert' : 'error']">
-            {{ resultat.encert_arma ? '✅' : '❌' }} Arma
+          <span
+            :class="[
+              'feedback-item',
+              resultat.encert_arma ? 'encert' : 'error',
+            ]"
+          >
+            {{ resultat.encert_arma ? "✅" : "❌" }} Arma
           </span>
-          <span :class="['feedback-item', resultat.encert_habitacio ? 'encert' : 'error']">
-            {{ resultat.encert_habitacio ? '✅' : '❌' }} Habitació
+          <span
+            :class="[
+              'feedback-item',
+              resultat.encert_habitacio ? 'encert' : 'error',
+            ]"
+          >
+            {{ resultat.encert_habitacio ? "✅" : "❌" }} Habitació
           </span>
         </div>
-        <p class="pista">Torna-ho a intentar! Alguns elements poden ser correctes.</p>
+        <p class="pista">
+          Torna-ho a intentar! Alguns elements poden ser correctes.
+        </p>
       </div>
 
       <!-- Botó d'acusació -->
       <button class="btn-acusar" :disabled="carregant" @click="acusar">
-        {{ carregant ? 'Comprovant...' : '⚖️ Fer Acusació' }}
+        {{ carregant ? "Comprovant..." : "⚖️ Fer Acusació" }}
       </button>
     </div>
   </div>

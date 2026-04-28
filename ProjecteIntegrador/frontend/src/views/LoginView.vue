@@ -1,46 +1,50 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
 
 // Estat del formulari
-const username = ref('')
-const password = ref('')
-const error = ref('')
-const carregant = ref(false)
-const mode = ref('login') // 'login' o 'register'
+const username = ref("");
+const password = ref("");
+const error = ref("");
+const carregant = ref(false);
+const mode = ref("login"); // 'login' o 'register'
 
 async function enviar() {
-  error.value = ''
-  carregant.value = true
+  error.value = "";
+  carregant.value = true;
 
-  const endpoint = mode.value === 'login' ? '/api/auth/login/' : '/api/auth/register/'
+  const endpoint =
+    mode.value === "login" ? "/api/auth/login/" : "/api/auth/register/";
 
   try {
     const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username.value, password: password.value }),
-      credentials: 'same-origin',
-    })
-    const data = await res.json()
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username.value,
+        password: password.value,
+      }),
+      credentials: "same-origin",
+    });
+    const data = await res.json();
 
     if (data.ok) {
-      router.push('/joc')
+      router.push("/joc");
     } else {
-      error.value = data.error || 'Error desconegut'
+      error.value = data.error || "Error desconegut";
     }
   } catch {
-    error.value = 'Error de connexió amb el servidor'
+    error.value = "Error de connexió amb el servidor";
   } finally {
-    carregant.value = false
+    carregant.value = false;
   }
 }
 
 function canviarMode() {
-  mode.value = mode.value === 'login' ? 'register' : 'login'
-  error.value = ''
+  mode.value = mode.value === "login" ? "register" : "login";
+  error.value = "";
 }
 </script>
 
@@ -49,7 +53,7 @@ function canviarMode() {
     <div class="login-card">
       <div class="logo">🕵️</div>
       <h1>Cluedo Web</h1>
-      <h2>{{ mode === 'login' ? 'Iniciar Sessió' : 'Crear Compte' }}</h2>
+      <h2>{{ mode === "login" ? "Iniciar Sessió" : "Crear Compte" }}</h2>
 
       <form @submit.prevent="enviar">
         <div class="form-group">
@@ -79,14 +83,20 @@ function canviarMode() {
         <p v-if="error" class="missatge-error">{{ error }}</p>
 
         <button type="submit" :disabled="carregant">
-          {{ carregant ? 'Carregant...' : (mode === 'login' ? 'Entrar' : 'Registrar-se') }}
+          {{
+            carregant
+              ? "Carregant..."
+              : mode === "login"
+                ? "Entrar"
+                : "Registrar-se"
+          }}
         </button>
       </form>
 
       <p class="canviar-mode">
-        {{ mode === 'login' ? "No tens compte?" : "Ja tens compte?" }}
+        {{ mode === "login" ? "No tens compte?" : "Ja tens compte?" }}
         <a href="#" @click.prevent="canviarMode">
-          {{ mode === 'login' ? "Registra't" : 'Inicia sessió' }}
+          {{ mode === "login" ? "Registra't" : "Inicia sessió" }}
         </a>
       </p>
     </div>

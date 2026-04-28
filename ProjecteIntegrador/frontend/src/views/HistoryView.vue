@@ -1,47 +1,47 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue";
 
-const historial = ref([])
-const carregant = ref(true)
-const partidesDesplegades = ref(new Set())
+const historial = ref([]);
+const carregant = ref(true);
+const partidesDesplegades = ref(new Set());
 
 function formatarTemps(segons) {
-  if (!segons && segons !== 0) return '—'
-  const m = Math.floor(segons / 60)
-  const s = segons % 60
-  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+  if (!segons && segons !== 0) return "—";
+  const m = Math.floor(segons / 60);
+  const s = segons % 60;
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
 function formatarData(isoString) {
-  return new Date(isoString).toLocaleString('ca-ES', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+  return new Date(isoString).toLocaleString("ca-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 function togglePartida(id) {
   if (partidesDesplegades.value.has(id)) {
-    partidesDesplegades.value.delete(id)
+    partidesDesplegades.value.delete(id);
   } else {
-    partidesDesplegades.value.add(id)
+    partidesDesplegades.value.add(id);
   }
   // Forcem la reactivitat creant un nou Set
-  partidesDesplegades.value = new Set(partidesDesplegades.value)
+  partidesDesplegades.value = new Set(partidesDesplegades.value);
 }
 
 onMounted(async () => {
   try {
-    const res = await fetch('/api/historial/', { credentials: 'same-origin' })
-    historial.value = await res.json()
+    const res = await fetch("/api/historial/", { credentials: "same-origin" });
+    historial.value = await res.json();
   } catch {
-    historial.value = []
+    historial.value = [];
   } finally {
-    carregant.value = false
+    carregant.value = false;
   }
-})
+});
 </script>
 
 <template>
@@ -71,15 +71,24 @@ onMounted(async () => {
         <!-- Capçalera de la partida -->
         <div class="partida-header" @click="togglePartida(partida.id)">
           <div class="partida-info">
-            <span class="estat-badge" :class="partida.resolta ? 'resolt' : 'pendent'">
-              {{ partida.resolta ? '✅ Resolta' : '⏳ En curs' }}
+            <span
+              class="estat-badge"
+              :class="partida.resolta ? 'resolt' : 'pendent'"
+            >
+              {{ partida.resolta ? "✅ Resolta" : "⏳ En curs" }}
             </span>
-            <span class="partida-data">{{ formatarData(partida.creada_en) }}</span>
+            <span class="partida-data">{{
+              formatarData(partida.creada_en)
+            }}</span>
           </div>
           <div class="partida-stats">
             <span>🔍 {{ partida.num_intents }} intents</span>
-            <span v-if="partida.resolta">⏱ {{ formatarTemps(partida.temps_resolucio) }}</span>
-            <span class="toggle-icon">{{ partidesDesplegades.has(partida.id) ? '▲' : '▼' }}</span>
+            <span v-if="partida.resolta"
+              >⏱ {{ formatarTemps(partida.temps_resolucio) }}</span
+            >
+            <span class="toggle-icon">{{
+              partidesDesplegades.has(partida.id) ? "▲" : "▼"
+            }}</span>
           </div>
         </div>
 
@@ -95,14 +104,19 @@ onMounted(async () => {
             :class="{ correcte: intent.correcte }"
           >
             <span class="intent-num">#{{ idx + 1 }}</span>
-            <span :class="['element', intent.encert_personatge ? 'encert' : 'fail']">
-              {{ intent.encert_personatge ? '✅' : '❌' }} {{ intent.personatge }}
+            <span
+              :class="['element', intent.encert_personatge ? 'encert' : 'fail']"
+            >
+              {{ intent.encert_personatge ? "✅" : "❌" }}
+              {{ intent.personatge }}
             </span>
             <span :class="['element', intent.encert_arma ? 'encert' : 'fail']">
-              {{ intent.encert_arma ? '✅' : '❌' }} {{ intent.arma }}
+              {{ intent.encert_arma ? "✅" : "❌" }} {{ intent.arma }}
             </span>
-            <span :class="['element', intent.encert_habitacio ? 'encert' : 'fail']">
-              {{ intent.encert_habitacio ? '✅' : '❌' }} {{ intent.habitacio }}
+            <span
+              :class="['element', intent.encert_habitacio ? 'encert' : 'fail']"
+            >
+              {{ intent.encert_habitacio ? "✅" : "❌" }} {{ intent.habitacio }}
             </span>
           </div>
         </div>

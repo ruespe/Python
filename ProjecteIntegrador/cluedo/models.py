@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 class Personatge(models.Model):
     """Personatge sospitós del Cluedo."""
+
     nom = models.CharField(max_length=100)
     descripcio = models.TextField(blank=True)
 
@@ -11,13 +12,14 @@ class Personatge(models.Model):
         return self.nom
 
     class Meta:
-        verbose_name = 'Personatge'
-        verbose_name_plural = 'Personatges'
-        ordering = ['nom']
+        verbose_name = "Personatge"
+        verbose_name_plural = "Personatges"
+        ordering = ["nom"]
 
 
 class Arma(models.Model):
     """Arma del crim del Cluedo."""
+
     nom = models.CharField(max_length=100)
     descripcio = models.TextField(blank=True)
 
@@ -25,13 +27,14 @@ class Arma(models.Model):
         return self.nom
 
     class Meta:
-        verbose_name = 'Arma'
-        verbose_name_plural = 'Armes'
-        ordering = ['nom']
+        verbose_name = "Arma"
+        verbose_name_plural = "Armes"
+        ordering = ["nom"]
 
 
 class Habitacio(models.Model):
     """Habitació de la mansió del Cluedo."""
+
     nom = models.CharField(max_length=100)
     descripcio = models.TextField(blank=True)
 
@@ -39,14 +42,15 @@ class Habitacio(models.Model):
         return self.nom
 
     class Meta:
-        verbose_name = 'Habitació'
-        verbose_name_plural = 'Habitacions'
-        ordering = ['nom']
+        verbose_name = "Habitació"
+        verbose_name_plural = "Habitacions"
+        ordering = ["nom"]
 
 
 class Solucio(models.Model):
     """Solució secreta d'una partida, única per usuari i sessió."""
-    usuari = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solucions')
+
+    usuari = models.ForeignKey(User, on_delete=models.CASCADE, related_name="solucions")
     personatge = models.ForeignKey(Personatge, on_delete=models.CASCADE)
     arma = models.ForeignKey(Arma, on_delete=models.CASCADE)
     habitacio = models.ForeignKey(Habitacio, on_delete=models.CASCADE)
@@ -59,14 +63,17 @@ class Solucio(models.Model):
         return f'Partida de {self.usuari.username} ({self.creada_en.strftime("%d/%m/%Y %H:%M")})'
 
     class Meta:
-        verbose_name = 'Solució'
-        verbose_name_plural = 'Solucions'
-        ordering = ['-creada_en']
+        verbose_name = "Solució"
+        verbose_name_plural = "Solucions"
+        ordering = ["-creada_en"]
 
 
 class Intent(models.Model):
     """Registre d'un intent d'acusació dins d'una partida."""
-    solucio = models.ForeignKey(Solucio, on_delete=models.CASCADE, related_name='intents')
+
+    solucio = models.ForeignKey(
+        Solucio, on_delete=models.CASCADE, related_name="intents"
+    )
     personatge = models.ForeignKey(Personatge, on_delete=models.CASCADE)
     arma = models.ForeignKey(Arma, on_delete=models.CASCADE)
     habitacio = models.ForeignKey(Habitacio, on_delete=models.CASCADE)
@@ -79,10 +86,10 @@ class Intent(models.Model):
     creat_en = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        estat = '✓' if self.correcte else '✗'
-        return f'Intent {estat} de {self.solucio.usuari.username}'
+        estat = "✓" if self.correcte else "✗"
+        return f"Intent {estat} de {self.solucio.usuari.username}"
 
     class Meta:
-        verbose_name = 'Intent'
-        verbose_name_plural = 'Intents'
-        ordering = ['creat_en']
+        verbose_name = "Intent"
+        verbose_name_plural = "Intents"
+        ordering = ["creat_en"]
